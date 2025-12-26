@@ -4,7 +4,12 @@ export class ByteReader {
     private uint8: Uint8Array;
 
     constructor(buffer: ArrayBuffer | Uint8Array) {
-        this.uint8 = buffer instanceof Uint8Array ? buffer : new Uint8Array(buffer);
+        if ((buffer as any) instanceof Uint8Array) {
+            this.uint8 = buffer as Uint8Array;
+        } else {
+            this.uint8 = new Uint8Array(buffer);
+        }
+
         this.view = new DataView(this.uint8.buffer, this.uint8.byteOffset, this.uint8.byteLength);
     }
 

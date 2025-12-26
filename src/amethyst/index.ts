@@ -1,18 +1,18 @@
 import { ByteReader, ByteWriter } from './io';
 import { TagCompound } from './tags';
 import { TagType } from './types';
+import { decompress } from './compression';
 
 export * from './tags';
 export * from './io';
 export * from './types';
+export * from './compression';
 
 export class TagIO {
     /**
      * Reads a root TagCompound from a buffer.
-     * @param buffer The input buffer (ArrayBuffer or Uint8Array).
-     * @param isNetworkPacket
-     * If true, adheres to 1.20.2+ Network NBT spec (Root Compound has no name).
-     * If false, adheres to Disk/Standard spec (Root Compound has name).
+     * **Note:** This method is synchronous and assumes the data is ALREADY decompressed.
+     * Use `readAsync` if you need automatic decompression.
      */
     public static read(buffer: ArrayBuffer | Uint8Array, isNetworkPacket: boolean = false): TagCompound {
         const stream = new ByteReader(buffer);
@@ -25,7 +25,6 @@ export class TagIO {
         const root = new TagCompound();
 
         if (!isNetworkPacket) {
-            // Standard NBT: Read Root Name
             const nameLen = stream.readUShort();
             if (nameLen > 0) {
                 const nameBytes = stream.readBytes(nameLen);
@@ -34,7 +33,6 @@ export class TagIO {
                 root.name = "";
             }
         } else {
-            // Network NBT: No name
             root.name = "";
         }
 
@@ -43,12 +41,27 @@ export class TagIO {
     }
 
     /**
+     * Automatically detects compression (GZip/ZLib) and reads the TagCompound.
+     * This is the recommended method for reading files like level.dat or region chunks.
+     */
+    public static async readAsync(buffer: ArrayBuffer | Uint8Array, isNetworkPacket: boolean = false): Promise<TagCompound> {
+        let uint8: Uint8Array;
+        if ((buffer as any) instanceof Uint8Array) {
+            uint8 = buffer as Uint8Array;
+        } else {
+            uint8 = new Uint8Array(buffer);
+        }
+
+        const cleanData = await decompress(uint8);
+        return this.read(cleanData, isNetworkPacket);
+    }
+
+    /**
      * Writes a root TagCompound to a Uint8Array.
      */
     public static write(tag: TagCompound, isNetworkPacket: boolean = false): Uint8Array {
         const stream = new ByteWriter();
 
-        // Write ID
         stream.writeByte(TagType.Compound);
 
         if (!isNetworkPacket) {
