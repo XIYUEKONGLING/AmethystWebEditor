@@ -140,7 +140,7 @@ function handleDelete() {
     <div
         class="flex items-center gap-2 p-1 rounded transition-colors group border border-transparent"
         :class="{ 
-        'bg-white/5 hover:bg-white/10': !isSelfMatch,
+        'hover:bg-white/5': !isSelfMatch,
         'bg-yellow-500/30 border-yellow-500/50': isSelfMatch 
       }"
         :style="{ paddingLeft: indent }"
