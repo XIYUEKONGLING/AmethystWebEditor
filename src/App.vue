@@ -158,7 +158,7 @@ const searchQuery = ref("");
   <div class="min-h-screen flex flex-col p-4 sm:p-8">
 
     <!-- Navbar -->
-    <nav class="flex justify-between items-center mb-8 acrylic-panel p-4 rounded-xl">
+    <nav class="flex justify-between items-center mb-8 p-4 rounded-xl bg-[#141414]/70 backdrop-blur-[20px] backdrop-saturate-150 border border-white/10 shadow-2xl">
       <div class="flex items-center gap-3">
         <div class="w-8 h-8 bg-purple-600 rounded flex items-center justify-center shadow-lg shadow-purple-500/30">
           <i class="fas fa-cubes text-white"></i>
@@ -204,12 +204,12 @@ const searchQuery = ref("");
       </div>
 
       <!-- State 1: No File Loaded -->
-      <div v-if="!currentFile && !isLoading" class="w-full max-w-2xl acrylic-panel p-8 rounded-2xl">
+      <div v-if="!currentFile && !isLoading" class="w-full max-w-2xl p-8 rounded-2xl bg-[#141414]/70 backdrop-blur-[20px] backdrop-saturate-150 border border-white/10 shadow-2xl">
         <FileUploader @file-loaded="onFileLoaded" />
       </div>
 
       <!-- State 2: Region File View (Select Chunk) -->
-      <div v-else-if="isRegion && !rootTag && !isLoading" class="w-full acrylic-panel p-6 rounded-2xl flex flex-col gap-4">
+      <div v-else-if="isRegion && !rootTag && !isLoading" class="w-full p-6 rounded-2xl flex flex-col gap-4 bg-[#141414]/70 backdrop-blur-[20px] backdrop-saturate-150 border border-white/10 shadow-2xl">
         <div class="flex justify-between items-center border-b border-white/10 pb-4">
           <div class="flex items-center gap-2">
             <i class="fas fa-map text-purple-400"></i>
@@ -222,7 +222,7 @@ const searchQuery = ref("");
       </div>
 
       <!-- State 3: Editor View (NBT Tree) -->
-      <div v-else-if="rootTag && !isLoading" class="w-full acrylic-panel rounded-2xl flex flex-col h-[80vh]">
+      <div v-else-if="rootTag && !isLoading" class="w-full rounded-2xl flex flex-col h-[80vh] bg-[#141414]/70 backdrop-blur-[20px] backdrop-saturate-150 border border-white/10 shadow-2xl">
 
         <!-- Editor Header -->
         <div class="p-4 border-b border-white/10 flex items-center justify-between bg-black/20 rounded-t-2xl">
