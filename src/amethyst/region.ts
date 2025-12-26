@@ -1,4 +1,4 @@
-import { TagIO } from './index';
+import { TagIO } from './nbt';
 import { TagCompound } from './tags';
 import { decompressWithAlgorithm } from './compression';
 
