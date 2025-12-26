@@ -1,7 +1,8 @@
 export const CompressionType = {
     None: 0,
     GZip: 1,
-    ZLib: 2
+    ZLib: 2,
+    Raw: 3 // 3 means uncompressed in MCA standard
 } as const;
 
 export type CompressionType = typeof CompressionType[keyof typeof CompressionType];
@@ -38,8 +39,8 @@ export function detectCompression(data: Uint8Array): CompressionType {
 }
 
 /**
- * Decompresses the data if it is compressed using GZip or ZLib.
- * Returns the original data if no compression is detected.
+ * Decompresses the data automatically by detecting magic numbers.
+ * Useful for level.dat.
  */
 export async function decompress(data: Uint8Array): Promise<Uint8Array> {
     const type = detectCompression(data);
@@ -48,15 +49,15 @@ export async function decompress(data: Uint8Array): Promise<Uint8Array> {
         return data;
     }
 
-    let format: CompressionFormat;
+    const format = type === CompressionType.GZip ? 'gzip' : 'deflate';
+    return decompressWithAlgorithm(data, format);
+}
 
-    if (type === CompressionType.GZip) {
-        format = 'gzip';
-    } else {
-        // 'deflate' in standard Web API usually refers to the ZLIB wrapper (RFC 1950)
-        format = 'deflate';
-    }
-
+/**
+ * Decompresses data using a specific algorithm.
+ * Useful for MCA chunks where the compression type is explicitly stated in the header.
+ */
+export async function decompressWithAlgorithm(data: Uint8Array, format: CompressionFormat): Promise<Uint8Array> {
     try {
         const ds = new DecompressionStream(format);
         const blob = new Blob([data as any]);
@@ -64,6 +65,6 @@ export async function decompress(data: Uint8Array): Promise<Uint8Array> {
         const buffer = await new Response(stream).arrayBuffer();
         return new Uint8Array(buffer);
     } catch (e) {
-        throw new Error(`Failed to decompress ${type === CompressionType.GZip ? 'GZip' : 'ZLib'} data: ${e}`);
+        throw new Error(`Failed to decompress using '${format}': ${e}`);
     }
 }
