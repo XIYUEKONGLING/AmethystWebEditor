@@ -274,6 +274,7 @@ const searchQuery = ref("");
               :tag="rootTag"
               :name="rootTag.name || ''"
               :depth="0"
+              :search-query="searchQuery"
           />
         </div>
       </div>
