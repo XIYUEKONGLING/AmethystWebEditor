@@ -31,7 +31,7 @@ const isArray = computed(() =>
     props.tag.type === TagType.LongArray
 );
 
-// Icon mapping (Font Awesome classes or just simple indicators)
+// Icon mapping
 const typeIcon = computed(() => {
   switch (props.tag.type) {
     case TagType.Compound: return 'fas fa-box text-yellow-400';
@@ -42,7 +42,7 @@ const typeIcon = computed(() => {
 });
 
 // Computed Children for v-for
-const children = computed(() => {
+const children = computed<[string | number, Tag][]>(() => {
   if (props.tag instanceof TagCompound) {
     // Access private map via casting
     return Array.from((props.tag as any).tags.entries());
