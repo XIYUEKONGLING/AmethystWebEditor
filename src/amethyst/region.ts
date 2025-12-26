@@ -7,8 +7,8 @@ export class RegionReader {
     private uint8: Uint8Array;
 
     constructor(buffer: ArrayBuffer | Uint8Array) {
-        if (buffer instanceof Uint8Array) {
-            this.uint8 = buffer;
+        if ((buffer as unknown) instanceof Uint8Array) {
+            this.uint8 = buffer as Uint8Array;
         } else {
             this.uint8 = new Uint8Array(buffer);
         }

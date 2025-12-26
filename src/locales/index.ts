@@ -35,7 +35,15 @@ const messages = {
         region: {
             chunkCount: "Chunks Found",
             selectChunk: "Select a chunk to edit"
-        }
+        },
+        ui: {
+            closeFile: "Close File",
+            closeConfirm: "Are you sure you want to close this file? Unsaved changes will be lost.",
+            backToGrid: "Back to Chunk Grid",
+            saveFailed: "Save failed: ",
+            reset: "Reset",
+            back: "Back"
+        },
     },
     zh: {
         title: "Amethyst NBT 编辑器",
@@ -71,7 +79,15 @@ const messages = {
         region: {
             chunkCount: "个区块",
             selectChunk: "点击区块进行编辑"
-        }
+        },
+        ui: {
+            closeFile: "关闭文件",
+            closeConfirm: "确定要关闭当前文件吗？未保存的更改将会丢失。",
+            backToGrid: "返回区块视图",
+            saveFailed: "保存失败: ",
+            reset: "重置",
+            back: "返回"
+        },
     }
 };
 

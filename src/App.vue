@@ -69,7 +69,7 @@ function resetState() {
  * Removes the current file and returns to the upload screen.
  */
 function removeFile() {
-  if (confirm("Are you sure you want to close this file? Unsaved changes will be lost.")) {
+  if (confirm(t('ui.closeConfirm'))) {
     resetState();
   }
 }
@@ -143,7 +143,7 @@ async function handleSave() {
       downloadBlob(data, currentFile.value?.name || "data.nbt");
     }
   } catch (e) {
-    alert("Save failed: " + e);
+    alert(t('ui.saveFailed') + e);
     console.error(e);
   } finally {
     isLoading.value = false;
@@ -175,7 +175,7 @@ const searchQuery = ref("");
             title="Close current file"
         >
           <i class="fas fa-times"></i>
-          <span class="hidden sm:inline">Close File</span>
+          <span class="hidden sm:inline">{{ t('ui.closeFile') }}</span>
         </button>
 
         <button
@@ -200,7 +200,7 @@ const searchQuery = ref("");
       <div v-if="errorMsg" class="w-full bg-red-500/20 border border-red-500/50 p-4 rounded-xl mb-6 text-center">
         <p class="text-red-200 font-bold">{{ t('error') }}</p>
         <p class="text-sm">{{ errorMsg }}</p>
-        <button @click="resetState" class="mt-2 text-sm underline">Reset</button>
+        <button @click="resetState" class="mt-2 text-sm underline">{{ t('ui.reset') }}</button>
       </div>
 
       <!-- State 1: No File Loaded -->
@@ -232,7 +232,7 @@ const searchQuery = ref("");
                 v-if="isRegion"
                 @click="closeChunk"
                 class="w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition"
-                title="Back to Chunk Grid"
+                :title="t('ui.backToGrid')"
             >
               <i class="fas fa-arrow-left"></i>
             </button>
